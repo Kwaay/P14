@@ -7,7 +7,7 @@ import styles from './Home.module.css';
 export default function Home() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [birthDate, setBirthDate] = useState('');
+  const [birthDate, setBirthDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
@@ -37,10 +37,10 @@ export default function Home() {
                 onChange={(e) => setLastName(e.target.value)}
               />
               <label htmlFor="date-of-birth">Date of Birth</label>
-              <input
-                id="date-of-birth"
-                type="text"
-                onChange={(e) => setBirthDate(e.target.value)}
+              <DatePicker
+                selected={birthDate}
+                dateFormat="dd/MM/yyyy"
+                onChange={(date) => setBirthDate(date)}
               />
               <label htmlFor="start-date">Start Date</label>
               <DatePicker
