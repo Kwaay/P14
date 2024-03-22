@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import Home from './routes/Home';
 import './style.css';
 import 'react-datepicker/dist/react-datepicker.css';
+import 'react-dropdown/style.css';
 
 import store from './store';
 

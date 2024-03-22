@@ -6,7 +6,11 @@ main {
 .container {
   display: flex;
   justify-content: center;
-  height: 100vh;
+  height: calc(100vh - 86px);
+}
+
+.form-container {
+  min-width: 400px;
 }
 
 .form-container h2 {
@@ -14,6 +18,18 @@ main {
 }
 
 .form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-container form input {
+  height: 40px;
+  width: 100%;
+}
+
+.address {
   display: flex;
   flex-direction: column;
   gap: 15px;
