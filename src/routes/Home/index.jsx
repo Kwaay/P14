@@ -1,4 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { useEffect, useState } from 'react';
+import DatePicker from 'react-datepicker';
 import Header from '../../components/Header';
 import styles from './Home.module.css';
 
@@ -6,7 +8,7 @@ export default function Home() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [birthDate, setBirthDate] = useState('');
-  const [startDate, setStartDate] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
@@ -41,10 +43,10 @@ export default function Home() {
                 onChange={(e) => setBirthDate(e.target.value)}
               />
               <label htmlFor="start-date">Start Date</label>
-              <input
-                id="start-date"
-                type="text"
-                onChange={(e) => setStartDate(e.target.value)}
+              <DatePicker
+                selected={startDate}
+                dateFormat="dd/MM/yyyy"
+                onChange={(date) => setStartDate(date)}
               />
               <fieldset className="address">
                 <legend>Address</legend>
