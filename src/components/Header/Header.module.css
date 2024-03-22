@@ -1,0 +1,24 @@
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-family: 'Roboto Slab', serif;
+  background-color: #2d2f31;
+  margin: 0;
+}
+
+header h1 {
+  color: white;
+  font-weight: 300;
+}
+
+header nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 30px;
+}
+
+header nav a {
+  color: white;
+}
