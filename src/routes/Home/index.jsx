@@ -309,7 +309,7 @@ export default function Home() {
                 <label htmlFor="state">State</label>
                 <Dropdown
                   options={states}
-                  onChange={({ value }) => setState(value)}
+                  onChange={({ label }) => setState(label)}
                   value={defaultOption}
                 />
                 <label htmlFor="zip-code">Zip Code</label>
