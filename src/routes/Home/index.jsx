@@ -1,260 +1,264 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import Dropdown from 'react-dropdown';
 import Header from '../../components/Header';
 import styles from './Home.module.css';
 
+import { setEmployee } from '../../store/EmployeeSlice';
+
 export default function Home() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [birthDate, setBirthDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(new Date());
+  const [birthDate, setBirthDate] = useState(Date.now() - 20000000);
+  const [startDate, setStartDate] = useState(Date.now() - 20000000);
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [zipCode, setZipCode] = useState('');
   const [department, setDepartment] = useState('');
-  function saveEmployee() {}
+
   const states = [
     {
-      value: 'Alabama',
-      abbreviation: 'AL',
+      label: 'Alabama',
+      value: 'AL',
     },
     {
-      value: 'Alaska',
-      abbreviation: 'AK',
+      label: 'Alaska',
+      value: 'AK',
     },
     {
-      value: 'American Samoa',
-      abbreviation: 'AS',
+      label: 'American Samoa',
+      value: 'AS',
     },
     {
-      value: 'Arizona',
-      abbreviation: 'AZ',
+      label: 'Arizona',
+      value: 'AZ',
     },
     {
-      value: 'Arkansas',
-      abbreviation: 'AR',
+      label: 'Arkansas',
+      value: 'AR',
     },
     {
-      value: 'California',
-      abbreviation: 'CA',
+      label: 'California',
+      value: 'CA',
     },
     {
-      value: 'Colorado',
-      abbreviation: 'CO',
+      label: 'Colorado',
+      value: 'CO',
     },
     {
-      value: 'Connecticut',
-      abbreviation: 'CT',
+      label: 'Connecticut',
+      value: 'CT',
     },
     {
-      value: 'Delaware',
-      abbreviation: 'DE',
+      label: 'Delaware',
+      value: 'DE',
     },
     {
-      value: 'District Of Columbia',
-      abbreviation: 'DC',
+      label: 'District Of Columbia',
+      value: 'DC',
     },
     {
-      value: 'Federated States Of Micronesia',
-      abbreviation: 'FM',
+      label: 'Federated States Of Micronesia',
+      value: 'FM',
     },
     {
-      value: 'Florida',
-      abbreviation: 'FL',
+      label: 'Florida',
+      value: 'FL',
     },
     {
-      value: 'Georgia',
-      abbreviation: 'GA',
+      label: 'Georgia',
+      value: 'GA',
     },
     {
-      value: 'Guam',
-      abbreviation: 'GU',
+      label: 'Guam',
+      value: 'GU',
     },
     {
-      value: 'Hawaii',
-      abbreviation: 'HI',
+      label: 'Hawaii',
+      value: 'HI',
     },
     {
-      value: 'Idaho',
-      abbreviation: 'ID',
+      label: 'Idaho',
+      value: 'ID',
     },
     {
-      value: 'Illinois',
-      abbreviation: 'IL',
+      label: 'Illinois',
+      value: 'IL',
     },
     {
-      value: 'Indiana',
-      abbreviation: 'IN',
+      label: 'Indiana',
+      value: 'IN',
     },
     {
-      value: 'Iowa',
-      abbreviation: 'IA',
+      label: 'Iowa',
+      value: 'IA',
     },
     {
-      value: 'Kansas',
-      abbreviation: 'KS',
+      label: 'Kansas',
+      value: 'KS',
     },
     {
-      value: 'Kentucky',
-      abbreviation: 'KY',
+      label: 'Kentucky',
+      value: 'KY',
     },
     {
-      value: 'Louisiana',
-      abbreviation: 'LA',
+      label: 'Louisiana',
+      value: 'LA',
     },
     {
-      value: 'Maine',
-      abbreviation: 'ME',
+      label: 'Maine',
+      value: 'ME',
     },
     {
-      value: 'Marshall Islands',
-      abbreviation: 'MH',
+      label: 'Marshall Islands',
+      value: 'MH',
     },
     {
-      value: 'Maryland',
-      abbreviation: 'MD',
+      label: 'Maryland',
+      value: 'MD',
     },
     {
-      value: 'Massachusetts',
-      abbreviation: 'MA',
+      label: 'Massachusetts',
+      value: 'MA',
     },
     {
-      value: 'Michigan',
-      abbreviation: 'MI',
+      label: 'Michigan',
+      value: 'MI',
     },
     {
-      value: 'Minnesota',
-      abbreviation: 'MN',
+      label: 'Minnesota',
+      value: 'MN',
     },
     {
-      value: 'Mississippi',
-      abbreviation: 'MS',
+      label: 'Mississippi',
+      value: 'MS',
     },
     {
-      value: 'Missouri',
-      abbreviation: 'MO',
+      label: 'Missouri',
+      value: 'MO',
     },
     {
-      value: 'Montana',
-      abbreviation: 'MT',
+      label: 'Montana',
+      value: 'MT',
     },
     {
-      value: 'Nebraska',
-      abbreviation: 'NE',
+      label: 'Nebraska',
+      value: 'NE',
     },
     {
-      value: 'Nevada',
-      abbreviation: 'NV',
+      label: 'Nevada',
+      value: 'NV',
     },
     {
-      value: 'New Hampshire',
-      abbreviation: 'NH',
+      label: 'New Hampshire',
+      value: 'NH',
     },
     {
-      value: 'New Jersey',
-      abbreviation: 'NJ',
+      label: 'New Jersey',
+      value: 'NJ',
     },
     {
-      value: 'New Mexico',
-      abbreviation: 'NM',
+      label: 'New Mexico',
+      value: 'NM',
     },
     {
-      value: 'New York',
-      abbreviation: 'NY',
+      label: 'New York',
+      value: 'NY',
     },
     {
-      value: 'North Carolina',
-      abbreviation: 'NC',
+      label: 'North Carolina',
+      value: 'NC',
     },
     {
-      value: 'North Dakota',
-      abbreviation: 'ND',
+      label: 'North Dakota',
+      value: 'ND',
     },
     {
-      value: 'Northern Mariana Islands',
-      abbreviation: 'MP',
+      label: 'Northern Mariana Islands',
+      value: 'MP',
     },
     {
-      value: 'Ohio',
-      abbreviation: 'OH',
+      label: 'Ohio',
+      value: 'OH',
     },
     {
-      value: 'Oklahoma',
-      abbreviation: 'OK',
+      label: 'Oklahoma',
+      value: 'OK',
     },
     {
-      value: 'Oregon',
-      abbreviation: 'OR',
+      label: 'Oregon',
+      value: 'OR',
     },
     {
-      value: 'Palau',
-      abbreviation: 'PW',
+      label: 'Palau',
+      value: 'PW',
     },
     {
-      value: 'Pennsylvania',
-      abbreviation: 'PA',
+      label: 'Pennsylvania',
+      value: 'PA',
     },
     {
-      value: 'Puerto Rico',
-      abbreviation: 'PR',
+      label: 'Puerto Rico',
+      value: 'PR',
     },
     {
-      value: 'Rhode Island',
-      abbreviation: 'RI',
+      label: 'Rhode Island',
+      value: 'RI',
     },
     {
-      value: 'South Carolina',
-      abbreviation: 'SC',
+      label: 'South Carolina',
+      value: 'SC',
     },
     {
-      value: 'South Dakota',
-      abbreviation: 'SD',
+      label: 'South Dakota',
+      value: 'SD',
     },
     {
-      value: 'Tennessee',
-      abbreviation: 'TN',
+      label: 'Tennessee',
+      value: 'TN',
     },
     {
-      value: 'Texas',
-      abbreviation: 'TX',
+      label: 'Texas',
+      value: 'TX',
     },
     {
-      value: 'Utah',
-      abbreviation: 'UT',
+      label: 'Utah',
+      value: 'UT',
     },
     {
-      value: 'Vermont',
-      abbreviation: 'VT',
+      label: 'Vermont',
+      value: 'VT',
     },
     {
-      value: 'Virgin Islands',
-      abbreviation: 'VI',
+      label: 'Virgin Islands',
+      value: 'VI',
     },
     {
-      value: 'Virginia',
-      abbreviation: 'VA',
+      label: 'Virginia',
+      value: 'VA',
     },
     {
-      value: 'Washington',
-      abbreviation: 'WA',
+      label: 'Washington',
+      value: 'WA',
     },
     {
-      value: 'West Virginia',
-      abbreviation: 'WV',
+      label: 'West Virginia',
+      value: 'WV',
     },
     {
-      value: 'Wisconsin',
-      abbreviation: 'WI',
+      label: 'Wisconsin',
+      value: 'WI',
     },
     {
-      value: 'Wyoming',
-      abbreviation: 'WY',
+      label: 'Wyoming',
+      value: 'WY',
     },
   ];
-  const defaultOption = states[0];
+  const defaultOption = states[0].label;
+  const dispatch = useDispatch();
 
   return (
     <div className="App">
@@ -263,7 +267,7 @@ export default function Home() {
         <section className={styles.container}>
           <div className={styles['form-container']}>
             <h2>Create Employee</h2>
-            <form action="#" id="create-employee" onChange={saveEmployee}>
+            <form action="#" id="create-employee">
               <label htmlFor="first-name">First Name</label>
               <input
                 type="text"
@@ -278,15 +282,15 @@ export default function Home() {
               />
               <label htmlFor="date-of-birth">Date of Birth</label>
               <DatePicker
-                selected={birthDate}
+                selected={new Date(birthDate)}
                 dateFormat="dd/MM/yyyy"
-                onChange={(date) => setBirthDate(date)}
+                onChange={(date) => setBirthDate(date.getTime())}
               />
               <label htmlFor="start-date">Start Date</label>
               <DatePicker
-                selected={startDate}
+                selected={new Date(startDate)}
                 dateFormat="dd/MM/yyyy"
-                onChange={(date) => setStartDate(date)}
+                onChange={(date) => setStartDate(date.getTime())}
               />
               <fieldset className={styles.address}>
                 <legend>Address</legend>
@@ -305,8 +309,8 @@ export default function Home() {
                 <label htmlFor="state">State</label>
                 <Dropdown
                   options={states}
-                  onChange={(value) => setState(value)}
-                  value={defaultOption.value}
+                  onChange={({ value }) => setState(value)}
+                  value={defaultOption}
                 />
                 <label htmlFor="zip-code">Zip Code</label>
                 <input
@@ -325,11 +329,29 @@ export default function Home() {
                   'Human Resources',
                   'Legal',
                 ]}
-                onChange={(value) => setDepartment(value)}
-                value={defaultOption.value}
+                onChange={({ value }) => setDepartment(value)}
+                value="Sales"
               />
             </form>
-            <button onClick="saveEmployee()">Save</button>
+            <button
+              onClick={() => {
+                dispatch(
+                  setEmployee({
+                    firstName,
+                    lastName,
+                    birthDate,
+                    startDate,
+                    street,
+                    city,
+                    state,
+                    zipCode,
+                    department,
+                  }),
+                );
+              }}
+            >
+              Save
+            </button>
           </div>
         </section>
       </main>

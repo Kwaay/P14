@@ -1,12 +1,12 @@
 main {
   background-color: #202124;
   color: white;
+  flex-grow: 1;
 }
 
 .container {
   display: flex;
   justify-content: center;
-  height: calc(100vh - 86px);
 }
 
 .form-container {
