@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 import DatePicker from 'react-datepicker';
 import Dropdown from 'react-dropdown';
-import Modal from 'k-reactmodal';
+import Modal from '@k_ben/k-reactmodal';
 import Header from '../../components/Header';
 import styles from './Home.module.css';
 
@@ -273,6 +273,7 @@ export default function Home() {
             width="300px"
             position="topleft"
             delay={5000}
+            buttonPosition="bottomright"
           />
         )}
 
