@@ -1,23 +1,23 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Controller, useForm } from 'react-hook-form';
+
 import DatePicker from 'react-datepicker';
 import Dropdown from 'react-dropdown';
+import Modal from 'k-reactmodal';
 import Header from '../../components/Header';
 import styles from './Home.module.css';
 
 import { setEmployee } from '../../store/EmployeeSlice';
 
 export default function Home() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [birthDate, setBirthDate] = useState(Date.now() - 20000000);
-  const [startDate, setStartDate] = useState(Date.now() - 20000000);
-  const [street, setStreet] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [zipCode, setZipCode] = useState('');
-  const [department, setDepartment] = useState('');
+  const {
+    register,
+    formState: { errors, isSubmitSuccessful },
+    handleSubmit,
+    control,
+  } = useForm();
 
   const states = [
     {
@@ -257,101 +257,248 @@ export default function Home() {
       value: 'WY',
     },
   ];
-  const defaultOption = states[0].label;
+
   const dispatch = useDispatch();
 
   return (
     <div className="App">
       <Header />
       <main>
+        {isSubmitSuccessful && (
+          <Modal
+            type="success"
+            title={'Success'}
+            content={"L'employé a bien été créé"}
+            height="150px"
+            width="300px"
+            position="topleft"
+            delay={5000}
+          />
+        )}
+
         <section className={styles.container}>
           <div className={styles['form-container']}>
             <h2>Create Employee</h2>
-            <form action="#" id="create-employee">
-              <label htmlFor="first-name">First Name</label>
-              <input
-                type="text"
-                id="first-name"
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <label htmlFor="last-name">Last Name</label>
-              <input
-                type="text"
-                id="last-name"
-                onChange={(e) => setLastName(e.target.value)}
-              />
-              <label htmlFor="date-of-birth">Date of Birth</label>
-              <DatePicker
-                selected={new Date(birthDate)}
-                dateFormat="dd/MM/yyyy"
-                onChange={(date) => setBirthDate(date.getTime())}
-              />
-              <label htmlFor="start-date">Start Date</label>
-              <DatePicker
-                selected={new Date(startDate)}
-                dateFormat="dd/MM/yyyy"
-                onChange={(date) => setStartDate(date.getTime())}
-              />
-              <fieldset className={styles.address}>
-                <legend>Address</legend>
-                <label htmlFor="street">Street</label>
-                <input
-                  id="street"
-                  type="text"
-                  onChange={(e) => setStreet(e.target.value)}
-                />
-                <label htmlFor="city">City</label>
-                <input
-                  id="city"
-                  type="text"
-                  onChange={(e) => setCity(e.target.value)}
-                />
-                <label htmlFor="state">State</label>
-                <Dropdown
-                  options={states}
-                  onChange={({ label }) => setState(label)}
-                  value={defaultOption}
-                />
-                <label htmlFor="zip-code">Zip Code</label>
-                <input
-                  id="zip-code"
-                  type="number"
-                  onChange={(e) => setZipCode(e.target.value)}
-                />
-              </fieldset>
-              <label htmlFor="department">Department</label>
-              <Dropdown
-                id="department"
-                options={[
-                  'Sales',
-                  'Marketing',
-                  'Engineering',
-                  'Human Resources',
-                  'Legal',
-                ]}
-                onChange={({ value }) => setDepartment(value)}
-                value="Sales"
-              />
-            </form>
-            <button
-              onClick={() => {
+            <form
+              action="#"
+              id="create-employee"
+              onSubmit={handleSubmit((data) => {
                 dispatch(
                   setEmployee({
-                    firstName,
-                    lastName,
-                    birthDate,
-                    startDate,
-                    street,
-                    city,
-                    state,
-                    zipCode,
-                    department,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    birthDate: +data.birthDate,
+                    startDate: +data.startDate,
+                    street: data.street,
+                    city: data.city,
+                    state: data.state.value,
+                    zipCode: data.zipCode,
+                    department: data.department.value,
                   }),
                 );
-              }}
+              })}
             >
-              Save
-            </button>
+              <label>First Name</label>
+              <input
+                type="text"
+                {...register('firstName', {
+                  required: {
+                    value: true,
+                    message: 'Le prénom est obligatoire',
+                  },
+                  minLength: {
+                    value: 2,
+                    message: 'Veuillez entrer au moins deux caractères',
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: 'Veuillez entrer au maximum 20 caractères',
+                  },
+                })}
+                aria-invalid={errors.firstName ? 'true' : 'false'}
+              />
+              {errors.firstName && (
+                <p role="alert">{errors.firstName?.message}</p>
+              )}
+
+              <label>Last Name</label>
+              <input
+                type="text"
+                {...register('lastName', {
+                  required: {
+                    value: true,
+                    message: 'Le nom est obligatoire',
+                  },
+                  minLength: {
+                    value: 2,
+                    message: 'Veuillez entrer au moins deux caractères',
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: 'Veuillez entrer au maximum 20 caractères',
+                  },
+                })}
+                aria-invalid={errors.lastName ? 'true' : 'false'}
+              />
+              {errors.lastName && (
+                <p role="alert">{errors.lastName?.message}</p>
+              )}
+              <label>Date of Birth</label>
+              <Controller
+                control={control}
+                name="birthDate"
+                rules={{
+                  required: 'Veuillez sélectionner une date de naissance',
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <DatePicker
+                    dateFormat="dd/MM/yyyy"
+                    onChange={onChange}
+                    selected={+value}
+                    error={!!errors.birthDate}
+                    helperText={
+                      errors.birthDate ? errors.birthDate.message : ''
+                    }
+                    aria-invalid={errors.birthDate ? 'true' : 'false'}
+                  />
+                )}
+              ></Controller>
+              {errors.birthDate && (
+                <p role="alert">{errors.birthDate?.message}</p>
+              )}
+              <label>Start Date</label>
+              <Controller
+                control={control}
+                name="startDate"
+                rules={{
+                  required: 'Veuillez sélectionner une date de début',
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <DatePicker
+                    dateFormat="dd/MM/yyyy"
+                    onChange={onChange}
+                    selected={+value}
+                    error={!!errors.startDate}
+                    helperText={
+                      errors.startDate ? errors.startDate.message : ''
+                    }
+                    aria-invalid={errors.startDate ? 'true' : 'false'}
+                  />
+                )}
+              ></Controller>
+              {errors.startDate && (
+                <p role="alert">{errors.startDate?.message}</p>
+              )}
+              <fieldset className={styles.address}>
+                <legend>Address</legend>
+                <label>Street</label>
+                <input
+                  type="text"
+                  {...register('street', {
+                    required: {
+                      value: true,
+                      message: 'Veuillez indiquer un numéro de rue',
+                    },
+                    minLength: {
+                      value: 2,
+                      message: 'Veuillez entrer au moins deux caractères',
+                    },
+                  })}
+                  aria-invalid={errors.street ? 'true' : 'false'}
+                />
+                {errors.street && <p role="alert">{errors.street?.message}</p>}
+                <label>City</label>
+                <input
+                  type="text"
+                  {...register('city', {
+                    required: {
+                      value: true,
+                      message: 'Veuillez indiquer une ville',
+                    },
+                    minLength: {
+                      value: 2,
+                      message: 'Veuillez entrer au moins deux caractères',
+                    },
+                  })}
+                  aria-invalid={errors.city ? 'true' : 'false'}
+                />
+                {errors.city && <p role="alert">{errors.city?.message}</p>}
+                <label>State</label>
+                <Controller
+                  control={control}
+                  name="state"
+                  rules={{
+                    required: 'Veuillez sélectionner un état',
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <Dropdown
+                      options={states}
+                      aria-invalid={errors.state ? 'true' : 'false'}
+                      onChange={onChange}
+                      selected={value}
+                      error={!!errors.state}
+                      helperText={errors.state ? errors.state.message : ''}
+                    />
+                  )}
+                ></Controller>
+
+                {errors.state && <p role="alert">{errors.state?.message}</p>}
+                <label>Zip Code</label>
+                <input
+                  type="number"
+                  {...register('zipCode', {
+                    required: {
+                      value: true,
+                      message: 'Le code postal est obligatoire',
+                    },
+                    minLength: {
+                      value: 2,
+                      message:
+                        'Le code postal ne peut pas être inférieur à 2 caractères',
+                    },
+                    maxLength: {
+                      value: 5,
+                      message:
+                        'Le code postal ne peut pas être inférieur à 5 caractères',
+                    },
+                  })}
+                  aria-invalid={errors.zipCode ? 'true' : 'false'}
+                />
+                {errors.zipCode && (
+                  <p role="alert">{errors.zipCode?.message}</p>
+                )}
+              </fieldset>
+              <label>Department</label>
+              <Controller
+                control={control}
+                name="department"
+                rules={{
+                  required: 'Veuillez sélectionner un département',
+                }}
+                render={({ field: { onChange, value } }) => (
+                  <Dropdown
+                    options={[
+                      'Sales',
+                      'Marketing',
+                      'Engineering',
+                      'Human Resources',
+                      'Legal',
+                    ]}
+                    aria-invalid={errors.department ? 'true' : 'false'}
+                    onChange={onChange}
+                    selected={value}
+                    error={!!errors.department}
+                    helperText={
+                      errors.department ? errors.department.message : ''
+                    }
+                  />
+                )}
+              ></Controller>
+              {errors.department && (
+                <p role="alert">{errors.department?.message}</p>
+              )}
+              <input type="submit" value="Save" />
+            </form>
           </div>
         </section>
       </main>
