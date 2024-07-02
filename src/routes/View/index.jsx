@@ -25,7 +25,10 @@ export default function View() {
         },
         {
           name: 'Start Date',
-          selector: (row) => row.startDate,
+          selector: (row) =>
+            new Date(row.startDate).toLocaleString('fr-FR', {
+              timeZone: 'UTC',
+            }),
           sortable: true,
         },
         {
@@ -35,7 +38,10 @@ export default function View() {
         },
         {
           name: 'Date of Birth',
-          selector: (row) => row.birthDate,
+          selector: (row) =>
+            new Date(row.birthDate).toLocaleString('fr-FR', {
+              timeZone: 'UTC',
+            }),
           sortable: true,
         },
         {

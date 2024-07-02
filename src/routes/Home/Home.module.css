@@ -2,6 +2,7 @@ main {
   background-color: #202124;
   color: white;
   flex-grow: 1;
+  position: relative;
 }
 
 .container {
