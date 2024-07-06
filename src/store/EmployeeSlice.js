@@ -5,14 +5,13 @@ const employeeSlice = createSlice({
   name: 'employees',
   initialState: {
     loading: false,
-    employees: JSON.parse(localStorage.getItem('employees')) || [],
+    employees: [],
     error: null,
   },
   reducers: {
     setEmployee: (state, action) => {
       // eslint-disable-next-line no-param-reassign
       state.employees.push(action.payload);
-      localStorage.setItem('employees', JSON.stringify(state.employees));
     },
   },
 });
